@@ -1,4 +1,11 @@
-{{files|json}}
-<div  class="row">
-
+<!-- {{files|json}} -->
+<div *ngFor="let file of files" class="row mt-2">
+<div class="col">
+    <a [href]="file.url">{{file.filename.substring(13)}}</a>
+</div>
+<div class="col">
+    <button (click)="delFile(file)" type="button" class="btn btn-primary">
+        Delete
+    </button>
+</div>
 </div>

@@ -11,12 +11,16 @@ export class UploadListComponent {
   files:any
   constructor(private uploadservice:UploadService){
     this.uploadservice.getFiles().snapshotChanges().pipe(
-      map((changes)=>changes.map((c:any)=>({key:c.payload.key, ...c.payload.val() }))
-    )
+      map(
+        (changes)=>changes.map(
+          (c:any)=>({key:c.payload.key, ...c.payload.val() })
+        ))
     ).subscribe(files=>this.files=files)
-
   }
 
+  delFile(file:any){
+    this.uploadservice.deleteFile(file)
+  }
 
 
 }

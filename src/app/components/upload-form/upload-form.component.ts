@@ -13,17 +13,22 @@ export class UploadFormComponent {
   constructor(private uploadservice:UploadService){}
 
   upload(){
-    console.log("Files: ",this.selectedFile.file)
-    this.uploadservice.pushFile(this.selectedFile).subscribe(
-      (percent)=>this.percentage=Math.round(Number(percent))
-    )
+    console.log("Files: ",this.selectedFile)
+    for (const element of this.selectedFile) {
+      this.uploadservice.pushFile(element).subscribe(
+        (percent)=>this.percentage=Math.round(Number(percent))
+      )
+    }
+
+
+  
     this.selectedFile=undefined
   }
   
   changes(event:any){
     console.log(event.target.files)
     this.selectedFile={}
-    this.selectedFile.file=event.target.files[0]
+    this.selectedFile=event.target.files
   }
 
 }

@@ -12,10 +12,10 @@ export class UploadService {
   constructor(private db: AngularFireDatabase, private storage:AngularFireStorage) { }
 
   pushFile(fileUpLoad:any){
-      const filename = Date.now()+fileUpLoad.file.name
+      const filename = Date.now()+fileUpLoad.name
       const filePath= this.basePath+"/"+filename
       const storageRef = this.storage.ref(filePath)
-      const uploadTask = this.storage.upload(filePath, fileUpLoad.file)
+      const uploadTask = this.storage.upload(filePath, fileUpLoad)
       uploadTask.snapshotChanges().pipe(
         finalize(()=>{
           storageRef.getDownloadURL().subscribe(
@@ -32,5 +32,21 @@ export class UploadService {
   
   getFiles(){
     return this.db.list(this.basePath)
+  }
+
+  deleteFile(file:any){
+    this.deleteFileDatabase(file.key).then(
+      ()=>this.deleteFileStorage(file.filename)
+    ).catch(
+      (err)=>console.log(err)
+    )
+  }
+
+  private deleteFileStorage(key:any){
+    this.storage.ref(this.basePath).child(key).delete()
+
+  }
+  private deleteFileDatabase(key:any){
+    return this.db.list(this.basePath).remove(key)
   }
 }
