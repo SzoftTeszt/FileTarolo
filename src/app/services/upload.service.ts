@@ -12,14 +12,15 @@ export class UploadService {
   constructor(private db: AngularFireDatabase, private storage:AngularFireStorage) { }
 
   pushFile(fileUpLoad:any){
-      const filePath= this.basePath+"/"+fileUpLoad.file.name
+      const filename = Date.now()+fileUpLoad.file.name
+      const filePath= this.basePath+"/"+filename
       const storageRef = this.storage.ref(filePath)
       const uploadTask = this.storage.upload(filePath, fileUpLoad.file)
       uploadTask.snapshotChanges().pipe(
         finalize(()=>{
           storageRef.getDownloadURL().subscribe(
             (url:any)=>{
-              let file ={url:url, filename:fileUpLoad.file.name}
+              let file ={url:url, filename:filename}
               this.saveFileData(file)
             })
         })).subscribe()

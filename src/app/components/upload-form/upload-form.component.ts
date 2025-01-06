@@ -8,18 +8,21 @@ import { UploadService } from '../../services/upload.service';
 })
 export class UploadFormComponent {
   files:any
-  selectedFile:any={}
+  selectedFile:any=undefined
+  percentage=0
   constructor(private uploadservice:UploadService){}
 
   upload(){
     console.log("Files: ",this.selectedFile.file)
     this.uploadservice.pushFile(this.selectedFile).subscribe(
-      (percent)=>console.log(percent,"%")
+      (percent)=>this.percentage=Math.round(Number(percent))
     )
+    this.selectedFile=undefined
   }
   
   changes(event:any){
     console.log(event.target.files)
+    this.selectedFile={}
     this.selectedFile.file=event.target.files[0]
   }
 

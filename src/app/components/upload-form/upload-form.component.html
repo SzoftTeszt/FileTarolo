@@ -2,4 +2,12 @@
     <label for="formFile" class="form-label">Default file input example</label>
     <input (change)="changes($event)"  class="form-control" type="file" id="formFile">
 </div>
-<button (click)="upload()" type="button" class="btn btn-primary">Upload</button>
+<button [disabled]="!selectedFile" (click)="upload()" type="button" class="btn btn-primary">Upload</button>
+
+<div class="progress mt-3">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+    role="progressbar" 
+    [attr.aria-valuenow]="percentage" 
+    aria-valuemin="0" aria-valuemax="100" 
+    [ngStyle]="{width: percentage+'%'}">{{percentage}}%</div>
+</div>
